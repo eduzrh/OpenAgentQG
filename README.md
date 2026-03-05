@@ -8,7 +8,7 @@
 
 
 
-<h3>—————— Under Review at IEEE TKDE ——————</h3>
+<h3>—————— Under Review——————</h3>
 
 </div>
 
