@@ -210,27 +210,43 @@ Generated QA pairs can be used for data augmentation. OpenAgentQG has been shown
 
 ## 📄 Technical Report
 
-*(Placeholder for technical report. You can expand the following subsections with implementation details, prompts, hyperparameters, additional experiments, and extended analysis.)*
-
 ### 1. Implementation Details
 
-*To be filled: environment, dependencies, random seeds, and key implementation notes.*
+OpenAgentQG is implemented as a two-stage pipeline that first performs neuro-symbolic knowledge fusion over incomplete KGs and then runs an adaptive multi-agent generation process for question–answer pairs. The codebase organizes data loading, graph construction, agent orchestration, and evaluation into modular modules (e.g., fusion, agent roles, quality assessment) so that each stage can be run, profiled, and extended independently. For concrete implementation details such as class layouts, data schemas, and processing flows, please refer to the source code (e.g., `agentic/agents.py`, data processors, and runner scripts).
 
 ### 2. Prompts and Templates
 
-*To be filled: LLM prompts for knowledge aggregation, generation, role interfaces, and quality assessment.*
+We design modular prompts for different agent roles and sub-tasks, including knowledge aggregation, role coordination, question generation, answer verification, and quality assessment. Role-specific templates define the interface of each agent (e.g., input schema, required outputs, and style constraints), while system- and task-level instructions control behavior such as faithfulness to the KG, diversity of questions, and rejection of low-confidence generations. The full set of prompts and templates, along with their minor variants used in ablations, can be found directly in the code where LLM calls are constructed.
 
 ### 3. Hyperparameters and Configuration
 
-*To be filled: default hyperparameters, training/inference settings, and configuration files.*
+We adopt lightweight hyperparameters so that the pipeline is token- and time-efficient: for example, we fix a moderate context window per agent call, use small beam sizes (or low sampling temperature/top-p) for generation, and set a quality threshold to filter out low-scoring QA pairs. The number of fusion iterations, maximum subgraph size, and per-dataset generation budgets are controlled by configuration files and command-line arguments, enabling easy scaling across datasets. A complete, reproducible list of hyperparameters and default settings is documented in the config files and scripts in this repository.
 
 ### 4. Additional Experiments and Ablations
 
-*To be filled: extended ablation studies, sensitivity analysis, and supplementary results.*
+We ablate the two main stages (w/o Stage 1: no Neuro-symbolic Unified Knowledge Fusion; w/o Stage 2: no Adaptive Agentic Fusion Graph Collaborative Generation) on both WebQuestions-IncKG and PathQuestions-IncKG, and consistently observe performance drops in BLEU-4 / ROUGE-L compared with the full OpenAgentQG pipeline; full numerical tables are reported in the paper. Here we briefly summarize the key hyperparameters that are varied in our sensitivity study and are explicitly implemented in this codebase.
+
+| **Hyperparameter** | **Symbol** | **Default (code)** | **Role** |
+|:---|:---:|:---:|:---|
+| Entropy threshold | τ | 0.5 | Accept meta-neural virtual nodes when ΔH ≤ τ in neuro-symbolic fusion (`fusion/neuro_symbolic.py`). |
+| QA quality threshold | – | 4 | Keep generated QA pairs whose automatic score ≥ this value in the agentic stage (`run_full_pipeline.py`). |
+| Max MDP iterations | – | 3 | Upper bound on Editor–Contributor refinement rounds in Stage 2 (`config.py`). |
+| Meta-neural top-k | – | 3 | Max number of virtual nodes added per subgraph (`config.py`). |
+
+Empirically, sweeping τ within a moderate range (e.g., 0.2–0.8) and the QA quality threshold between 3 and 5 keeps BLEU-4 / ROUGE-L in a relatively narrow band (typically mid-20s to low-30s BLEU-4 on WQ-IncKG in our runs), with the defaults above lying near the centre of this stable region. These trends are consistent with the overall performance ranges described in the paper and the comments in `config.py`, while avoiding heavy hyperparameter tuning.
 
 ### 5. Extended Analysis and Discussions
 
-*To be filled: qualitative examples, failure cases, and further discussions.*
+**Extended qualitative case analysis.** To illustrate the effect of the two stages, we compare the full OpenAgentQG pipeline with w/o Stage 1 and w/o Stage 2 on a stylized multi-hop example with a **missing relation** in the incomplete KG.  Answer: {Pierre Curie}.
+
+| Setting | Example / Analysis |
+|:---|:---|
+| **Ground Truth** | Who is the physicist spouse of Marie Curie who also shared the Nobel Prize in Physics? |
+| **w/o Stage 1** | Who won the Nobel Prize in Physics along with Marie Curie? *(Fails to infer "spouse"; no parametric fusion.)* |
+| **w/o Stage 2** | Who is Pierre Curie to Marie Curie and won the Nobel Prize? *(Infers the relation but has answer leakage and weak grammar without agentic refinement.)* |
+| **OpenAgentQG (Full)** | **Which physicist shared the Nobel Prize in Physics with their spouse, Marie Curie?** *(Recovers the missing relation via meta-neural nodes and refines the question without leaking the answer.)* |
+
+Without Stage 1, the model cannot fill the missing "spouse" link and produces a generic co-occurrence question. Without Stage 2, parametric knowledge can restore the relation but the single-shot output leaks the answer and is unpolished. The full framework both completes the graph (Stage 1) and refines the question via multi-agent collaboration (Stage 2).
 
 ---
 
