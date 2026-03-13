@@ -50,9 +50,8 @@
 
 | 🆕 Updates | 📅 Date | 📝 Description |
 |:---:|:---:|:---|
-| 📄 **TKDE Submission** | Mar 2026 | Manuscript submitted to IEEE TKDE. A clean code version will be released and the repository link will be updated within **7 days after submission** in compliance with the policy. |
+| 📄 **Code Release** | - | OpenAgentQG codebase and datasets now available |
 </div>
-
 
 ## 🔥 Key Features
 
@@ -140,12 +139,7 @@ Place dataset files (e.g., WebQuestions-IncKG, PathQuestions-IncKG) under the ex
 
 ### Step 4: Run OpenAgentQG ▶️
 
-Run the two-stage pipeline (neuro-symbolic fusion + agentic collaborative generation) on your target dataset. Example:
-
-```bash
-# Example (adjust script name and paths to your codebase)
-python run_openagentqg.py --dataset WebQuestions-IncKG --split test
-```
+Run the two-stage pipeline (neuro-symbolic fusion + agentic collaborative generation) on your target dataset.
 
 ### Step 5: Evaluate 📊
 
