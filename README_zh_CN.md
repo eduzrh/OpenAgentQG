@@ -44,7 +44,7 @@
 
 | 🆕 更新 | 📅 日期 | 📝 描述 |
 |:---:|:---:|:---|
-| 📄 **TKDE 投稿** | 2026 年 3 月 | 论文已投稿至 IEEE TKDE。根据期刊政策，我们会在投稿后 **7 天内** 更新仓库链接并释出整理后的代码版本。 |
+| 📄 **代码发布** | - | OpenAgentQG 代码与数据集现已开放 |
 
 </div>
 
@@ -108,11 +108,14 @@ pip install -r requirements.txt
 
 ## 📦 数据集
 
-我们在六种公开的 KGQG 场景上进行评估：
+我们在 **6 种**公开的 KGQG 场景上进行评估：WebQuestions、PathQuestions、**WebQuestions-IncKG**、**PathQuestions-IncKG**、**WebQuestions-Text**、**PathQuestions-Text**。
 
 - **WebQuestions**（整合 WebQuestionsSP 与 ComplexWebQuestions）：使用 [mhqg](https://github.com/liyuanfang/mhqg) 提供的数据构造  
 - **PathQuestions**：使用 [IRN](https://github.com/zmtkeke/IRN) 提供的数据构造  
-- **IncKG / Text 变体**：关于构造方式与下载链接，请参考 [OpenAgentQG 仓库说明](https://github.com/eduzrh/OpenAgentQG)
+- **WQ-IncKG / PQ-IncKG**：不完整 KG（随机去掉约 50% 三元组），数据处理遵循 TransferNet、GRAFT-Net、EmbedKGQA 等工作的设定  
+- **WebQuestions-Text / PathQuestions-Text**：同样遵循上述工作的数据与设定  
+
+**数据与依赖不随仓库打包，需自行下载。** 请阅读 **[data/README.md](data/README.md)**（[English](data/README_EN.md)），按说明下载 METEOR、GloVe、主数据并放置到对应目录；Graph2Seq 相关代码与配置见 [vendor/README.md](vendor/README.md)（[English](vendor/README_EN.md)），并前往 [Graph2Seq-for-KGQG](https://github.com/hugochan/Graph2Seq-for-KGQG) 获取与配置。
 
 ---
 
@@ -125,26 +128,27 @@ git clone https://github.com/eduzrh/OpenAgentQG.git
 cd OpenAgentQG
 ```
 
-### Step 2：安装依赖并设置 API Key 📦
+### Step 2：安装依赖并设置 API 📦
 
 ```bash
 pip install -r requirements.txt
-# 设置 OpenAI API key（或你自己的 LLM 推理服务）用于智能体调用
+# 设置环境变量（必填）：API Key 与 Base URL
+export OPENAI_API_KEY=sk-your-key
+export OPENAI_API_BASE=https://api.openai.com/v1   # 或你的中转地址
+# 可选：env.example 中有完整说明
 ```
 
 ### Step 3：准备数据 📂
 
-将对应数据集（如 WebQuestions-IncKG、PathQuestions-IncKG）的文件放置到本仓库预期的目录结构下。  
-具体格式与路径请参考本仓库文档与技术报告。
+- **无监督数据布局**：`data/mhqg-wq`、`data/mhqg-pq` 下为仅含输入的 `train/dev/test.json`，金标见 `data/<dataset>/eval_gold/`。  
+- 若你有带 `outSeq` 的原始数据，可用脚本生成上述结构：
+  ```bash
+  python scripts/prepare_unsupervised_data.py --source_dir /path/to/Graph2Seq4KGQG/data --data_dir data
+  ```
+- 详见 [DATA_LAYOUT.md](DATA_LAYOUT.md)。
 
 ### Step 4：运行 OpenAgentQG ▶️
 
-在目标数据集上运行两阶段流水线（神经–符号融合 + 多智能体协作生成）。例如：
-
-```bash
-# 示例（请根据你本地脚本名和路径进行调整）
-python run_openagentqg.py --dataset WebQuestions-IncKG --split test
-```
 
 ### Step 5：评估 📊
 
