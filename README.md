@@ -112,8 +112,8 @@ pip install -r requirements.txt
 We evaluate on six public KGQG settings:
 
 
-- **WebQuestions** (from WebQuestionsSP & ComplexWebQuestions): [mhqg](https://github.com/liyuanfang/mhqg)  
-- **PathQuestions**: [IRN](https://github.com/zmtkeke/IRN)  
+- **WebQuestions** (from WebQuestionsSP & ComplexWebQuestions)
+- **PathQuestions**
 - **IncKG / Text variants**: See [OpenAgentQG](https://github.com/eduzrh/OpenAgentQG) for construction and links.
 
 ---
