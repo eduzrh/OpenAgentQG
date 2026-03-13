@@ -114,7 +114,7 @@ We evaluate on six public KGQG settings:
 
 - **WebQuestions** (from WebQuestionsSP & ComplexWebQuestions)
 - **PathQuestions**
-- **IncKG / Text variants**: See [OpenAgentQG](https://github.com/eduzrh/OpenAgentQG/data) for construction and links.
+- **IncKG / Text variants**: See [OpenAgentQG](https://github.com/eduzrh/OpenAgentQG/tree/main/data) for construction and links.
 
 ---
 
