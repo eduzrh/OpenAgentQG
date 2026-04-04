@@ -1,7 +1,7 @@
 # Dataset Description & Download (Datasets)
 
 
-Data files are **not** included in the release. Please download them yourself and place them under the expected directories. This repo evaluates on **6** KGQG settings: WebQuestions, PathQuestions, **WebQuestions-IncKG**, **PathQuestions-IncKG**, **WebQuestions-Text**, and **PathQuestions-Text**.
+Due to the limitation of data size, Please download them yourself and place them under the expected directories. This repo evaluates on **6** KGQG settings: WebQuestions, PathQuestions, **WebQuestions-IncKG**, **PathQuestions-IncKG**, **WebQuestions-Text**, and **PathQuestions-Text**.
 
 ---
 
