@@ -1,7 +1,6 @@
 # Dataset Description & Download (Datasets)
 
-
-Due to the limitation of data size, Please download them yourself and place them under the expected directories. This repo evaluates on **6** KGQG settings: WebQuestions, PathQuestions, **WebQuestions-IncKG**, **PathQuestions-IncKG**, **WebQuestions-Text**, and **PathQuestions-Text**.
+The complete datasets exceed GitHub's recommended file size limits. Please download them yourself and place them under the expected directories. This repo evaluates on **6** KGQG settings: WebQuestions, PathQuestions, **WebQuestions-IncKG**, **PathQuestions-IncKG**, **WebQuestions-Text**, and **PathQuestions-Text**.
 
 ---
 
