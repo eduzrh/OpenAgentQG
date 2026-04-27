@@ -248,7 +248,7 @@ Without Stage 1, the model cannot fill the missing "spouse" link and produces a 
 
 This work extends our prior conference paper:
 
-- **CIKM 2024**: *Zero-shot Knowledge Graph Question Generation via Multi-Agent LLMs and Small Models Synthesis* — [CIKM 2024](https://doi.org/10.1145/3637521.3664594).
+- **CIKM 2024**: *Zero-shot Knowledge Graph Question Generation via Multi-Agent LLMs and Small Models Synthesis* — [CIKM 2024](https://dl.acm.org/doi/10.1145/3627673.3679805).
 
 We thank the following datasets and prior work that we build upon or compare with:
 
